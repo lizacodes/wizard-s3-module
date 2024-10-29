@@ -23,19 +23,16 @@ module "wizard_storage" {
   bucket_name = "my-bucket"
   owner       = "frontend-team"
   environment = var.environment
-  bucket_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect    = "Allow"
-        Principal = {
-          AWS = ["arn:aws:iam::${var.aws_account_id}:root"]
-        }
-        Action    = "s3:GetObject"
-        Resource  = ["${module.my_bucket.arn}/*"]
+  policyStatements = [
+    {
+      Effect    = "Allow"
+      Action    = "s3:GetObject"
+      Resource  = "${module.wizard_storage.arn}/*"
+      Principal = {
+        AWS = ["arn:aws:iam::${var.aws_account_id}:root"]
       }
-    ]
-  })
+    }
+  ]
 }
 ```
 
